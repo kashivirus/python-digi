@@ -1,0 +1,116 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Home Page</h2>
+<p>Welcome back, {{ username }}!</p>
+<div class="container">
+    <p><h2>Keyword Search Application</h2>  </p>
+    <div class="row">
+        <div class="col-8">
+            <strong>Search For : {{ keyword }}</strong>
+        </div>
+        <div class="col-4"> 
+            <!-- https://keywordsearchuser.pythonanywhere.com -->
+            <form action="http://localhost:5000/api/home?page=1" method="get" autocomplete="off"> 
+                <div class="row">
+                    <div class="col-6">
+                        <input type="text" class="form-control" name="keyword" id="keyword"  placeholder="Enter keyword"/> 
+                    </div>
+                    <div class="col-6" align="left">
+                        <input type="submit" value="Search" class="form-control btn btn-primary " name=""> 
+                    </div>
+                    
+                </div>
+            </form> 
+            <div class="col-6" align="left">
+                <br>
+                <a href="http://localhost:5000/api/getCSV">
+                    <input type="submit" value="Download CSV" class="btn btn-primary " name="">
+                </a>
+            </div>
+        </div>
+    </div>
+    {% if result_list %}
+    <div class="row">
+        <div class="col-12">
+            {{ pagination.info }}
+            {{ pagination.links }}
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Average Searches</th>
+                        <th>Competition Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in result_list %}
+                    <tr>
+                        <!-- <td>{{ loop.index + pagination.skip }}</td> -->
+                        <td>{{ item[0] }}</td>
+                        <td>{{ item[1] }}</td>
+                        <td>{{ item[2] }}</td>
+                        
+                    </tr>
+                    {% endfor %}  
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Average Searches</th>
+                        <th>Competition Level</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- {{ pagination.links }} -->
+            
+        </div>
+    </div>
+    {% endif %}
+
+
+
+
+</div> 
+
+
+
+
+<style>
+    table{
+        width:100%;
+    }
+    #example_filter{
+        float:right;
+    }
+    #example_paginate{
+        float:right;
+    }
+    label {
+        display: inline-flex;
+        margin-bottom: .5rem;
+        margin-top: .5rem;
+         
+    }
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        cursor: auto;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+    </style>
+    <script>
+    function checkAll(bx) {
+      var cbs = document.getElementsByTagName('input');
+      for(var i=0; i < cbs.length; i++) {
+        if(cbs[i].type == 'checkbox') {
+          cbs[i].checked = bx.checked;
+        }
+      }
+    }
+    </script>
+
+{% endblock %}
